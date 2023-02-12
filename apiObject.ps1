@@ -589,7 +589,12 @@ class apiStockNews:apiObject
 
     [void]FormatResponse([DateTime]$date)
     {
-        $this.tmpResponse = $this.response | Select-Object   @{Name="symbol" ; Expression = {$_.symbol}},@{Name='publishedDate' ; Expression = {[datetime]$_.publishedDate}},@{Name='text' ; Expression = {$_.text}}
+        $this.tmpResponse = $this.response | Select-Object      @{Name="symbol" ; Expression = {$_.symbol}},
+                                                                @{Name="site" ; Expression = {$_.site}},
+                                                                @{Name="url" ; Expression = {$_.url}},
+                                                                @{Name='publishedDate' ; Expression = {[datetime]$_.publishedDate}},
+                                                                @{Name='title' ; Expression = {$_.title}},
+                                                                @{Name='text' ; Expression = {$_.text}}
         foreach($record in $this.tmpResponse)
         {
             if( ($record.publishedDate -gt $date.addYears(-1)) -and ($record.publishedDate -lt $date) )
