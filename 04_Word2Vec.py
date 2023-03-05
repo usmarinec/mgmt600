@@ -8,6 +8,7 @@ from gensim.models import word2vec
 
 from sklearn.manifold import TSNE
 import matplotlib.pyplot as plt
+import csv
 #%matplotlib inline
 
 ## dataset import. We will compare two brands: apple & chanel
@@ -82,6 +83,12 @@ def tsne_plot(model):
                      va='bottom')
     plt.show()
 
+def most_similar_csv(list, file_name):
+    with open("./script_output/%s.csv" % file_name, "w", newline='') as out:
+        csv_out = csv.writer(out)
+        csv_out.writerow(['word', 'score'])
+        csv_out.writerows(list)
+
 df = clean_dataframe(df)
 df2 = clean_dataframe(df2)
 
@@ -92,7 +99,8 @@ model = word2vec.Word2Vec(corpus, vector_size=100, window=20, min_count=100, wor
 model.wv['apple']
 
 tsne_plot(model)
-print(model.wv.most_similar("apple")) 
+apple_list = model.wv.most_similar("apple")
+most_similar_csv(apple_list, "w2v_most_similar_apple")
 
 """ print(df)
 print(df2)
@@ -104,9 +112,9 @@ print(model.wv['apple'])
 print(model2.wv['chanel']) """
 
 
-
 model2 = word2vec.Word2Vec(corpus2, vector_size=100, window=20, min_count=150, workers=4)
 model2.wv['chanel']
 
 tsne_plot(model2)
-print(model2.wv.most_similar("chanel")) 
+chanel_list = model2.wv.most_similar("chanel")
+most_similar_csv(chanel_list, "w2v_most_similar_chanel")
