@@ -41,9 +41,6 @@ def clean_dataframe(df):
     
     return df
 
-df = clean_dataframe(df)
-df2 = clean_dataframe(df2)
-
 ## build corpus based on the Text column in df
 def build_corpus(df):
     "Creates a list of lists containing words from each sentence"
@@ -55,13 +52,6 @@ def build_corpus(df):
             
     return corpus
 
-corpus = build_corpus(df)
-corpus2 = build_corpus(df2)
-
-model = word2vec.Word2Vec(corpus, vector_size=100, window=20, min_count=100, workers=4)
-model.wv['apple']
-model2 = word2vec.Word2Vec(corpus2, vector_size=100, window=20, min_count=150, workers=4)
-model2.wv['chanel']
 
 def tsne_plot(model):
     "Creates and TSNE model and plots it"
@@ -92,17 +82,31 @@ def tsne_plot(model):
                      va='bottom')
     plt.show()
 
-print(df)
+df = clean_dataframe(df)
+df2 = clean_dataframe(df2)
+
+corpus = build_corpus(df)
+corpus2 = build_corpus(df2)
+
+model = word2vec.Word2Vec(corpus, vector_size=100, window=20, min_count=100, workers=4)
+model.wv['apple']
+
+tsne_plot(model)
+print(model.wv.most_similar("apple")) 
+
+""" print(df)
 print(df2)
 
 print(corpus[0:2])
 print(corpus2[0:2])
 
 print(model.wv['apple'])
-print(model2.wv['chanel'])
+print(model2.wv['chanel']) """
 
-tsne_plot(model)
-model.wv.most_similar("apple") 
+
+
+model2 = word2vec.Word2Vec(corpus2, vector_size=100, window=20, min_count=150, workers=4)
+model2.wv['chanel']
 
 tsne_plot(model2)
-model2.wv.most_similar("chanel") 
+print(model2.wv.most_similar("chanel")) 
